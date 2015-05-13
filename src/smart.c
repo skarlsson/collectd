@@ -157,7 +157,7 @@ static void smart_handle_disk (const char *dev)
   if (sk_disk_identify_is_available (d, &available) < 0 || !available)
   {
     INFO ("smart plugin: disk %s cannot be identified.", dev);
-    goto end;
+    /* goto end;*/
   }
   if (sk_disk_smart_is_available (d, &available) < 0 || !available)
   {
