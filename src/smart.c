@@ -142,11 +142,11 @@ static void smart_handle_disk (const char *dev)
   if (!shortname) return;
   shortname++;
   if (ignorelist_match (ignorelist, shortname) != 0) {
-    DEBUG ("smart plugin: ignoring %s.", dev);
+    INFO ("smart plugin: ignoring %s.", dev);
     return;
   }
 
-  DEBUG ("smart plugin: checking SMART status of %s.",
+  INFO ("smart plugin: checking SMART status of %s.",
          dev);
 
   if (sk_disk_open (dev, &d) < 0)
@@ -156,17 +156,17 @@ static void smart_handle_disk (const char *dev)
   }
   if (sk_disk_identify_is_available (d, &available) < 0 || !available)
   {
-    DEBUG ("smart plugin: disk %s cannot be identified.", dev);
+    INFO ("smart plugin: disk %s cannot be identified.", dev);
     goto end;
   }
   if (sk_disk_smart_is_available (d, &available) < 0 || !available)
   {
-    DEBUG ("smart plugin: disk %s has no SMART support.", dev);
+    INFO ("smart plugin: disk %s has no SMART support.", dev);
     goto end;
   }
   if (sk_disk_check_sleep_mode (d, &awake) < 0 || !awake)
   {
-    DEBUG ("smart plugin: disk %s is sleeping.", dev);
+    INFO ("smart plugin: disk %s is sleeping.", dev);
     goto end;
   }
   if (sk_disk_smart_read_data (d) < 0)
@@ -239,6 +239,8 @@ static int smart_read (void)
     ERROR ("smart plugin: unable to initialize udev.");
     return (-1);
   }
+   INFO ("smart plugin: udev initialized.");
+  
   enumerate = udev_enumerate_new (handle_udev);
   udev_enumerate_add_match_subsystem (enumerate, "block");
   udev_enumerate_add_match_property (enumerate, "DEVTYPE", "disk");
